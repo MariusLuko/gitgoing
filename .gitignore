@@ -22,3 +22,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 gitgoing-*.tar
 
+# Config files from installing VS Code extensions on remote system
+.elixir_ls

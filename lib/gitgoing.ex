@@ -15,4 +15,7 @@ defmodule Gitgoing do
   def hello do
     :world
   end
+
+  ## Adding a new comment to test recompiling
+
 end
