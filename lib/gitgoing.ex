@@ -16,11 +16,9 @@ defmodule Gitgoing do
     :world
   end
 
-  ## Testing adding values to a map
-  ## Don't like how I have to declare an empty map, should this go here?
 
   def create_map do
-     map = %{}
+     _map = %{}
   end
 
   def add_name(map) do
@@ -31,13 +29,4 @@ defmodule Gitgoing do
      Map.get(map, key)
   end
 
-#  customers = %{}
-#  Gitgoing.get_info()
-
-#  def get_info do
-#    fname = IO.gets("What's your first name? ")
-#    Map.put(customers, :first_name, fname)
-#    inspect customers
-#  end
-  
 end
