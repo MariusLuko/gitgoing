@@ -1,6 +1,6 @@
 defmodule Gitgoing do
 
-  import Gitgoing
+  require Logger
 
   @moduledoc """
   Documentation for `Gitgoing`.
@@ -22,18 +22,31 @@ defmodule Gitgoing do
 #  :gen_udp.recv(socket,0)
 # {:ok, {ip, port, msg}} = :gen_udp.recv(socket,0)
 
-#  How can you get around needing to run "socket = Gitgoing.open_udp(10110)"?
-#  Have this be called automatically by other code...
-
   def start(port) do
-    Gitgoing.grab_packet(Gitgoing.open_udp(port))
+    IO.inspect(self())
+    socket = Gitgoing.open_udp(port)
+    if :failed == socket do
+      IO.puts ("Please try again")
+      Logger.info("THE PROCESS HAS FAILED")
+    else
+      IO.puts ("The socket is currently set to: #{inspect socket}")
+      socket
+        |> Gitgoing.grab_packet
+      :gen_udp.close(socket)
+      IO.puts ("Socket #{inspect socket} has been closed successfully.")
+    end
   end
 
 
   def open_udp(port) do
       case :gen_udp.open(port, [:binary, {:active, false}]) do
-         {:ok, socket} -> IO.puts("Socket #{inspect socket} has been opened.")
-                          socket
+        {:ok, socket} -> IO.puts("Socket #{inspect socket} has been opened.")
+          socket
+        {:error, :eaddrinuse} -> IO.puts("This port is already in use")
+          Logger.error("Error Logger test")
+          :failed
+        {:error, :eacces} -> IO.puts("This port is not allowed")
+          :failed
       end
   end
 
