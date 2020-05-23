@@ -1,4 +1,7 @@
 defmodule Gitgoing do
+
+  import Gitgoing
+
   @moduledoc """
   Documentation for `Gitgoing`.
   """
@@ -22,6 +25,11 @@ defmodule Gitgoing do
 #  How can you get around needing to run "socket = Gitgoing.open_udp(10110)"?
 #  Have this be called automatically by other code...
 
+  def start(port) do
+    Gitgoing.grab_packet(Gitgoing.open_udp(port))
+  end
+
+
   def open_udp(port) do
       case :gen_udp.open(port, [:binary, {:active, false}]) do
          {:ok, socket} -> IO.puts("Socket #{inspect socket} has been opened.")
@@ -30,14 +38,16 @@ defmodule Gitgoing do
   end
 
   def grab_packet(port) do
-     data = :gen_udp.recv(port,0)
-     IO.inspect(data)
-     parse(data)
+      data = :gen_udp.recv(port,0)
+      parse(data)
+    # after
+    #   1000 -> IO.puts("System has timed out after 1 second")
   end
 
   defp parse(packet) do
      case packet do
-        {:ok, {_ip, _port, msg}} -> IO.inspect(msg)
+      #   {:ok, {_ip, _port, msg}} -> IO.inspect(msg)
+        {:ok, {_ip, _port, msg}} -> IO.puts(msg)
         _ -> IO.puts("unexpected packet format")
      end
   end
