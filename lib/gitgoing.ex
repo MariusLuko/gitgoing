@@ -20,9 +20,9 @@ defmodule Gitgoing do
 
 #  {:ok, socket} = :gen_udp.open(10110, [:binary, {:active, false}])
 #  :gen_udp.recv(socket,0)
-# {:ok, {ip, port, msg}} = :gen_udp.recv(socket,0)
+#  {:ok, {ip, port, msg}} = :gen_udp.recv(socket,0)
 
-  def start(port) do
+  def sampledata(port) do
     IO.inspect(self())
     socket = Gitgoing.open_udp(port)
     if :failed == socket do
@@ -30,6 +30,7 @@ defmodule Gitgoing do
       Logger.info("THE PROCESS HAS FAILED")
     else
       IO.puts ("The socket is currently set to: #{inspect socket}")
+      IO.puts("")
       socket
         |> Gitgoing.grab_packet
       :gen_udp.close(socket)
@@ -53,19 +54,13 @@ defmodule Gitgoing do
   def grab_packet(port) do
       data = :gen_udp.recv(port,0)
       parse(data)
-    # after
-    #   1000 -> IO.puts("System has timed out after 1 second")
   end
 
   defp parse(packet) do
      case packet do
       #   {:ok, {_ip, _port, msg}} -> IO.inspect(msg)
-        {:ok, {_ip, _port, msg}} -> IO.puts(msg)
+        {:ok, {_ip, _port, msg}} -> IO.puts("Sample data: #{msg}")
         _ -> IO.puts("unexpected packet format")
      end
   end
-
-  #  socket = Gitgoing.open_udp(10110)
-  #  Gitgoing.grab_packet(socket)
-
 end
